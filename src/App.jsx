@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import Inicio from "./components/Inicio"
 
 function App() {
 
   return (
     <>
-      <h1 className='text-5xl'>Hola Mundo</h1>
+      <Inicio />
     </>
   )
 }
