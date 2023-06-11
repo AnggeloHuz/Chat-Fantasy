@@ -11,11 +11,11 @@ export default {
         'Logo': "url('/src/assets/LOGO.png')"
       },
       colors: {
-        'primary': '#03318C',
-        'secondary': '#BDAEF2',
-        'claro': '#049DD9',
-        'opaco': '#010A26',
-        'negro': '#00030D',
+        'primary': '#038C3E',
+        'secondary': '#034159',
+        'claro': '#0CF25D',
+        'opaco': '#025951',
+        'negro': '#000000',
         'blanco': '#E5FFFF'
       },
     },
