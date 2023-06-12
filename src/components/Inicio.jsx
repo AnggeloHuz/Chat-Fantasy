@@ -1,19 +1,23 @@
+import Chat from "./Chat";
 import ForgotPassword from "./Login/ForgotPassword"
 import SignIn from "./Login/SignIn"
 import SignUp from "./Login/SignUp"
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { Contexto } from "../context/Contexto";
 
 function Inicio() {
-    
-    return ( 
+
+    const { sesion } = useContext(Contexto)
+
+    return (
         <>
-            <main className="min-h-[100vh] h-auto w-full bg-Login bg-cover bg-no-repeat bg-center flex justify-center items-center">
             <Routes>
-                    <Route path="/" element={<SignIn />} />
-                    <Route path="/register" element={<SignUp />} />
-                    <Route path="/recuperar" element={<ForgotPassword />} />
-                </Routes>
-            </main>
+                <Route path="/login" element={sesion.status === 'Loguiado' ? (<Navigate to='/' />) : (<SignIn />)} />
+                <Route path="/register" element={sesion.status === 'Loguiado' ? (<Navigate to='/' />) : (<SignUp />)} />
+                <Route path="/recuperar" element={sesion.status === 'Loguiado' ? (<Navigate to='/' />) : (<ForgotPassword />)} />
+                <Route path="/" element={sesion.status === 'Loguiado' ? (<Chat />) : (<Navigate to='/login' />)} />
+            </Routes>
         </>
     )
 }

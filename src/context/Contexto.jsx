@@ -8,6 +8,13 @@ export function ContextoProvider(props) {
     const [sesion, setSesion] = useState('')
 
     useEffect(() => {
+
+        let sesionLogin = JSON.parse(localStorage.getItem('sesion'))
+
+        if (sesionLogin != null) {
+            setSesion(sesionLogin)
+        }
+
         const data_usuarios = JSON.parse(localStorage.getItem("usuarios"));
         if (data_usuarios === null) {
             return
@@ -24,25 +31,67 @@ export function ContextoProvider(props) {
 
     const alertaLogin = (tipo) => {
         if (tipo) {
-            Swal.fire('SignIn Correcto', 'Has iniciado sesion correctamente', 'success')
+            Swal.fire({
+                title: 'SignIn Correcto',
+                text: 'Has iniciado sesion correctamente',
+                icon: 'success',
+                color: '#ffffff',
+                background: '#034159',
+                confirmButtonColor: '#038C3E'
+            })
         } else {
-            Swal.fire('SignIn Erroneo', 'Ingresa correctamente los datos para iniciar sesion', 'error')
+            Swal.fire({
+                title: 'SignIn Erroneo',
+                text: 'Ingresa correctamente los datos para iniciar sesion',
+                icon: 'error',
+                color: '#ffffff',
+                background: '#034159',
+                confirmButtonColor: '#038C3E'
+            })
         }
     }
 
     const alertaRecuperar = (tipo) => {
         if (tipo) {
-            Swal.fire('Recuperación Realizada', 'Se ha cambiado la clave correctamente', 'success')
+            Swal.fire({
+                title: 'Recuperación Realizada',
+                text: 'Se ha cambiado la clave correctamente',
+                icon: 'success',
+                color: '#ffffff',
+                background: '#034159',
+                confirmButtonColor: '#038C3E'
+            })
         } else {
-            Swal.fire('Error de Recuperación', 'No existe el usuario del cual deseas recuperar la clave', 'warning')
+            Swal.fire({
+                title: 'Error de Recuperación',
+                text: 'No existe el usuario del cual deseas recuperar la clave',
+                icon: 'warning',
+                color: '#ffffff',
+                background: '#034159',
+                confirmButtonColor: '#038C3E'
+            })
         }
     }
 
     const alertaCrear = (tipo) => {
         if (tipo) {
-            Swal.fire('Cuenta Creada con Éxito', 'Se ha creado la cuenta correctamente', 'success')
+            Swal.fire({
+                title: 'Cuenta Creada con Éxito',
+                text: 'Se ha creado la cuenta correctamente',
+                icon: 'success',
+                color: '#ffffff',
+                background: '#034159',
+                confirmButtonColor: '#038C3E'
+            })
         } else {
-            Swal.fire('Error de Registro', 'El usuario que ingresaste ya existe', 'warning')
+            Swal.fire({
+                title: 'Error de Registro',
+                text: 'El usuario que ingresaste ya existe',
+                icon: 'warning',
+                color: '#ffffff',
+                background: '#034159',
+                confirmButtonColor: '#038C3E'
+            })
         }
     }
 
@@ -50,9 +99,9 @@ export function ContextoProvider(props) {
     function RegistrarUsuario(usuario) {
         if (usuarios === '') {
             setUsuarios([usuario])
-        }else{
+        } else {
             let validamos = true
-            
+
             usuarios.forEach(user => {
                 if (user.usuario === usuario.usuario) {
                     validamos = false
@@ -77,11 +126,13 @@ export function ContextoProvider(props) {
             }
         });
 
-        if(login){
-            setSesion({status: 'Loguiado', usuario});
+        if (login) {
+            setSesion({ status: 'Loguiado', usuario });
+            localStorage.setItem('sesion', JSON.stringify({ status: 'Loguiado', usuario }))
             alertaLogin(true)
         } else {
-            setSesion({status: 'NoLoguiado'})
+            setSesion({ status: 'NoLoguiado' })
+            localStorage.setItem('sesion', JSON.stringify({ status: 'NoLoguiado' }))
             alertaLogin(false)
         }
     }
@@ -100,10 +151,25 @@ export function ContextoProvider(props) {
         (validacion ? alertaRecuperar(true) : alertaRecuperar(false))
     }
 
+    function cerrarSesion() {
+        setSesion({ status: 'NoLoguiado' });
+        localStorage.setItem('sesion', JSON.stringify({ status: 'NoLoguiado' }))
+
+        Swal.fire({
+            title: 'Has Cerrado la Sesión',
+            text: 'Vuelve Pronto a Chat Fantasy',
+            icon: 'success',
+            color: '#ffffff',
+            background: '#034159',
+            confirmButtonColor: '#038C3E'
+
+        })
+    }
+
     return (
         <Contexto.Provider value={{
-            usuarios, setUsuarios, RegistrarUsuario, IniciarSesion, sesion, setSesion, RecuperarClave
-            }}>
+            usuarios, setUsuarios, RegistrarUsuario, IniciarSesion, sesion, setSesion, RecuperarClave, cerrarSesion
+        }}>
             {props.children}
         </Contexto.Provider>
     )
